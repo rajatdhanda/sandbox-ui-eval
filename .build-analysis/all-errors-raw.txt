@@ -1,0 +1,36 @@
+.build-analysis/build-output.txt:Failed to compile.
+.build-analysis/build-output.txt:Type error: Property 'transforms' does not exist on type '{ icon: LucideIcon; title: string; description: string; requiredFields: string[]; optionalFields: string[]; duplicateCheckFields: string[]; validations: { date_of_birth: (value: string) => boolean; parent_email: (value: string) => boolean; parent_phone: (value: string) => boolean; }; transforms: { ...; }; sampleData...'.
+.build-analysis/tsc-initial.txt:archive/hooks/test-utilities/hook-error-scanner.ts(158,50): error TS1005: '}' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(162,27): error TS1005: '>' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(162,31): error TS1005: ';' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(162,54): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(162,55): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(164,21): error TS1005: '>' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(164,25): error TS1005: ';' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(164,48): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(164,49): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(166,23): error TS1005: '>' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(166,27): error TS1005: ';' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(166,50): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(166,51): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(168,27): error TS1005: '>' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(168,31): error TS1005: ';' expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(168,54): error TS1109: Expression expected.
+.build-analysis/tsc-initial.txt:archive/lib/styles/themes/activity-theme.ts(168,55): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/hooks/test-utilities/hook-error-scanner.ts(158,50): error TS1005: '}' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(162,27): error TS1005: '>' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(162,31): error TS1005: ';' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(162,54): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(162,55): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(164,21): error TS1005: '>' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(164,25): error TS1005: ';' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(164,48): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(164,49): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(166,23): error TS1005: '>' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(166,27): error TS1005: ';' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(166,50): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(166,51): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(168,27): error TS1005: '>' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(168,31): error TS1005: ';' expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(168,54): error TS1109: Expression expected.
+.build-analysis/tsc-second.txt:archive/lib/styles/themes/activity-theme.ts(168,55): error TS1109: Expression expected.

@@ -1,0 +1,852 @@
+{
+  "app/(tabs)/_layout.tsx": [
+    "expo-router",
+    "lucide-react-native"
+  ],
+  "app/(tabs)/attendance.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/supabase/services/database.service",
+    "@/lib/styles",
+    "../components/shared/date-selector",
+    "../components/shared/class-selector",
+    "../components/shared/confirm-button",
+    "../components/shared/status-button"
+  ],
+  "app/(tabs)/children.tsx": [
+    "../components/admin/children-management"
+  ],
+  "app/(tabs)/classes.tsx": [
+    "react",
+    "../components/admin/class-management"
+  ],
+  "app/(tabs)/curriculum-admin.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/supabase/services/database.service",
+    "../components/shared/crud-components",
+    "../components/shared/tab-navigation",
+    "../components/shared/curriculum-form",
+    "../components/shared/scrollable-container"
+  ],
+  "app/(tabs)/curriculum.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "@/lib/supabase/services/database.service",
+    "@/lib/styles",
+    "../components/shared/class-selector",
+    "../components/shared/confirm-button",
+    "../components/shared/time-schedule",
+    "../components/shared/curriculum-picker",
+    "../components/shared/date-week-selector"
+  ],
+  "app/(tabs)/relationships.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/supabase/services/database.service",
+    "@/hooks/use-crud",
+    "@/app/components/shared/crud-components",
+    "@/app/components/shared/auto-form",
+    "@/app/components/shared/console-logger",
+    "@/app/components/shared/smart-selector",
+    "@/app/components/shared/scrollable-container"
+  ],
+  "app/(tabs)/test-query.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "@/hooks/use-crud",
+    "@/lib/styles"
+  ],
+  "app/(tabs)/test-relationships.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/supabase/services/database.service",
+    "@react-native-picker/picker"
+  ],
+  "app/(tabs)/test.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/hooks/use-entity-options",
+    "@/hooks/use-crud",
+    "@/lib/utils/form-field-builder",
+    "../components/shared/scrollable-container",
+    "../components/shared/auto-form",
+    "../components/shared/smart-selector",
+    "../components/shared/stat-cards",
+    "../components/shared/crud-components",
+    "../components/shared/console-logger"
+  ],
+  "app/(tabs)/users.tsx": [
+    "../components/admin/user-management"
+  ],
+  "app/_layout.tsx": [
+    "expo-router"
+  ],
+  "app/components/admin/admin-dashboard.tsx": [
+    "react",
+    "lucide-react"
+  ],
+  "app/components/admin/attendance-quick.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/supabase/services/database.service",
+    "@/lib/styles"
+  ],
+  "app/components/admin/children-management.tsx": [
+    "react",
+    "react-native-safe-area-context",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/hooks/use-crud",
+    "@/hooks/use-entity-options",
+    "../shared/crud-components",
+    "../shared/auto-form",
+    "../shared/console-logger",
+    "../shared/scrollable-container",
+    "@/lib/config/children-config"
+  ],
+  "app/components/admin/class-management.tsx": [
+    "react",
+    "react-native-safe-area-context",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/hooks/use-crud",
+    "@/hooks/use-entity-options",
+    "../shared/crud-components",
+    "../shared/auto-form",
+    "../shared/console-logger",
+    "../shared/scrollable-container",
+    "@/lib/config/children-config"
+  ],
+  "app/components/admin/curriculum-management.tsx": [
+    "react",
+    "react-native-safe-area-context",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/hooks/use-crud",
+    "@/lib/supabase/services/database.service",
+    "../shared/crud-components",
+    "../shared/curriculum-form"
+  ],
+  "app/components/admin/curriculum-week-view.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/supabase/services/database.service",
+    "@/lib/styles"
+  ],
+  "app/components/admin/relationship-management.tsx": [
+    "react",
+    "react-native-safe-area-context",
+    "react-native",
+    "lucide-react-native",
+    "../shared/scrollable-container",
+    "@/lib/styles",
+    "@/hooks/use-crud",
+    "../shared/crud-components",
+    "../shared/auto-form",
+    "../shared/console-logger"
+  ],
+  "app/components/admin/user-management.tsx": [
+    "react",
+    "react-native-safe-area-context",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/hooks/use-crud",
+    "../shared/crud-components",
+    "../shared/auto-form",
+    "../shared/console-logger",
+    "../shared/scrollable-container"
+  ],
+  "app/components/shared/animated-header.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/attachment-field.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/auto-form.tsx": [
+    "react",
+    "react-native",
+    "@/lib/styles",
+    "./smart-selector"
+  ],
+  "app/components/shared/branded-header.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/config/brand-config"
+  ],
+  "app/components/shared/button-styles.tsx": [
+    "@/lib/styles"
+  ],
+  "app/components/shared/class-selector.tsx": [
+    "react",
+    "react-native",
+    "@/lib/styles",
+    "./button-styles"
+  ],
+  "app/components/shared/confirm-button.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/console-logger.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/crud-components.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/curriculum-form.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "react-native-safe-area-context",
+    "@/lib/styles",
+    "@/lib/supabase/services/database.service",
+    "./smart-selector",
+    "./attachment-field"
+  ],
+  "app/components/shared/curriculum-manager.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/supabase/services/database.service",
+    "@/lib/styles",
+    "./crud-components"
+  ],
+  "app/components/shared/curriculum-picker.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "./button-styles"
+  ],
+  "app/components/shared/curriculum-week-planner.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/supabase/services/curriculum.service"
+  ],
+  "app/components/shared/date-selector.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "./button-styles"
+  ],
+  "app/components/shared/date-week-selector.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/entity-management.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/schemas",
+    "@/lib/utils/logger",
+    "@/lib/supabase/services/database-service-with-logging"
+  ],
+  "app/components/shared/entity-selector.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/file-attachments.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/file-upload-field.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "@/lib/supabase/client"
+  ],
+  "app/components/shared/filter-pills.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/hide-on-scroll.tsx": [
+    "react",
+    "react-native"
+  ],
+  "app/components/shared/relationship-card.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/relationship-manager.tsx": [
+    "react",
+    "react-native",
+    "react-native-safe-area-context",
+    "lucide-react-native",
+    "./entity-selector",
+    "@/lib/supabase/services/database.service",
+    "@/lib/types/relationships",
+    "@/lib/styles"
+  ],
+  "app/components/shared/responsive-header.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/responsive-utils.tsx": [
+    "react-native"
+  ],
+  "app/components/shared/schedule-field-handler.ts": [
+    "@/lib/config/school-config"
+  ],
+  "app/components/shared/scrollable-container.tsx": [
+    "react",
+    "react-native"
+  ],
+  "app/components/shared/scrollable-header.tsx": [
+    "react",
+    "react-native"
+  ],
+  "app/components/shared/smart-selector.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/stat-cards.tsx": [
+    "react",
+    "react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/status-button.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles",
+    "./button-styles"
+  ],
+  "app/components/shared/tab-navigation.tsx": [
+    "react",
+    "react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/time-schedule.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/components/shared/week-selector.tsx": [
+    "react",
+    "react-native",
+    "lucide-react-native",
+    "@/lib/styles"
+  ],
+  "app/index.tsx": [
+    "react",
+    "react-native",
+    "expo-router"
+  ],
+  "pages/api/test.ts": [
+    "next"
+  ],
+  "pages/api/users.ts": [
+    "next",
+    "../../lib/supabase/client"
+  ],
+  "lib/auth/admin-auth.ts": [
+    "@/lib/supabase/client"
+  ],
+  "lib/config/brand-config.ts": [],
+  "lib/config/children-config.ts": [
+    "@/lib/styles"
+  ],
+  "lib/config/school-config.ts": [
+    "@/lib/styles"
+  ],
+  "lib/config/users-config.ts": [
+    "react",
+    "@/lib/styles",
+    "lucide-react-native"
+  ],
+  "lib/schemas/index.ts": [
+    "zod"
+  ],
+  "lib/styles/index.ts": [
+    "react-native",
+    "@/lib/config/brand-config"
+  ],
+  "lib/supabase/_generated/clients/announcements.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/attendance.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/attendance_records.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/children.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/class_assignments.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/classes.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/config_fields.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum_assignments.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum_executions.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum_imports.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum_items.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/curriculum_templates.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/daily_logs.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/events.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/index.ts": [
+    "./notifications",
+    "./photos",
+    "./classes",
+    "./children",
+    "./parent_child_relationships",
+    "./class_assignments",
+    "./config_fields",
+    "./daily_logs",
+    "./worksheets",
+    "./users",
+    "./attendance",
+    "./milestones",
+    "./announcements",
+    "./events",
+    "./messages",
+    "./message_threads",
+    "./photo_albums",
+    "./student_progress",
+    "./curriculum",
+    "./photo_tags",
+    "./system_logs",
+    "./attendance_records",
+    "./reports",
+    "./curriculum_assignments",
+    "./curriculum_items",
+    "./time_slots",
+    "./curriculum_templates",
+    "./curriculum_executions",
+    "./curriculum_imports"
+  ],
+  "lib/supabase/_generated/clients/message_threads.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/messages.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/milestones.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/notifications.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/parent_child_relationships.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/photo_albums.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/photo_tags.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/photos.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/reports.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/student_progress.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/system_logs.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/time_slots.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/users.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/clients/worksheets.ts": [
+    "../../../supabase-server",
+    "../database.types"
+  ],
+  "lib/supabase/_generated/generated-types.ts": [],
+  "lib/supabase/_generated/index.ts": [
+    "./types",
+    "./clients/notifications",
+    "./clients/photos",
+    "./clients/classes",
+    "./clients/children",
+    "./clients/parent_child_relationships",
+    "./clients/class_assignments",
+    "./clients/config_fields",
+    "./clients/daily_logs",
+    "./clients/worksheets",
+    "./clients/users",
+    "./clients/attendance",
+    "./clients/milestones",
+    "./clients/announcements",
+    "./clients/events",
+    "./clients/messages",
+    "./clients/message_threads",
+    "./clients/photo_albums",
+    "./clients/student_progress",
+    "./clients/curriculum",
+    "./clients/photo_tags",
+    "./clients/system_logs",
+    "./clients/attendance_records",
+    "./clients/reports",
+    "./clients/curriculum_assignments",
+    "./clients/curriculum_items",
+    "./clients/time_slots",
+    "./clients/curriculum_templates",
+    "./clients/curriculum_executions",
+    "./clients/curriculum_imports",
+    "./queries/notifications",
+    "./queries/photos",
+    "./queries/classes",
+    "./queries/children",
+    "./queries/parent_child_relationships",
+    "./queries/class_assignments",
+    "./queries/config_fields",
+    "./queries/daily_logs",
+    "./queries/worksheets",
+    "./queries/users",
+    "./queries/attendance",
+    "./queries/milestones",
+    "./queries/announcements",
+    "./queries/events",
+    "./queries/messages",
+    "./queries/message_threads",
+    "./queries/photo_albums",
+    "./queries/student_progress",
+    "./queries/curriculum",
+    "./queries/photo_tags",
+    "./queries/system_logs",
+    "./queries/attendance_records",
+    "./queries/reports",
+    "./queries/curriculum_assignments",
+    "./queries/curriculum_items",
+    "./queries/time_slots",
+    "./queries/curriculum_templates",
+    "./queries/curriculum_executions",
+    "./queries/curriculum_imports"
+  ],
+  "lib/supabase/_generated/queries/announcements.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/attendance.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/attendance_records.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/children.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/class_assignments.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/classes.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/config_fields.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum_assignments.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum_executions.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum_imports.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum_items.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/curriculum_templates.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/daily_logs.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/events.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/index.ts": [
+    "./notifications",
+    "./photos",
+    "./classes",
+    "./children",
+    "./parent_child_relationships",
+    "./class_assignments",
+    "./config_fields",
+    "./daily_logs",
+    "./worksheets",
+    "./users",
+    "./attendance",
+    "./milestones",
+    "./announcements",
+    "./events",
+    "./messages",
+    "./message_threads",
+    "./photo_albums",
+    "./student_progress",
+    "./curriculum",
+    "./photo_tags",
+    "./system_logs",
+    "./attendance_records",
+    "./reports",
+    "./curriculum_assignments",
+    "./curriculum_items",
+    "./time_slots",
+    "./curriculum_templates",
+    "./curriculum_executions",
+    "./curriculum_imports",
+    "../generated-types",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/message_threads.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/messages.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/milestones.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/notifications.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/parent_child_relationships.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/photo_albums.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/photo_tags.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/photos.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/reports.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/student_progress.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/system_logs.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/time_slots.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/users.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/queries/worksheets.ts": [
+    "../../../supabase-server",
+    "../generated-types"
+  ],
+  "lib/supabase/_generated/types.ts": [
+    "@supabase/supabase-js"
+  ],
+  "lib/supabase/client.ts": [
+    "@supabase/supabase-js"
+  ],
+  "lib/supabase/core/types.ts": [
+    "@/lib/supabase/_generated/generated-types",
+    "@/lib/supabase/_generated/generated-types",
+    "../_generated/database.types"
+  ],
+  "lib/supabase/generated-types.ts": [],
+  "lib/supabase/index.ts": [
+    "./server-client",
+    "./server-client"
+  ],
+  "lib/supabase/schema-manager.ts": [
+    "@supabase/supabase-js",
+    "fs/promises",
+    "path",
+    "@supabase/supabase-js",
+    "@supabase/supabase-js",
+    "@supabase/supabase-js",
+    "../types",
+    "./types",
+    "./clients/${table.name}",
+    "./queries/${table.name}"
+  ],
+  "lib/supabase/server-client.ts": [
+    "@supabase/supabase-js"
+  ],
+  "lib/supabase/services/curriculum.service.ts": [
+    "./database.service",
+    "@/lib/utils/logger"
+  ],
+  "lib/supabase/services/database-service-with-logging.ts": [
+    "@supabase/supabase-js",
+    "../_generated/database.types",
+    "./env",
+    "@/lib/utils/logger"
+  ],
+  "lib/supabase/services/database.service.ts": [
+    "../client",
+    "./env",
+    "@supabase/supabase-js",
+    "../generated-types",
+    "@/lib/auth/admin-auth"
+  ],
+  "lib/supabase/services/env.ts": [],
+  "lib/supabase-browser.ts": [
+    "@supabase/supabase-js"
+  ],
+  "lib/supabase-server.ts": [
+    "@supabase/supabase-js"
+  ],
+  "lib/supabase.ts": [
+    "./supabase-browser",
+    "./supabase-browser",
+    "./supabase-server"
+  ],
+  "lib/types/relationships.ts": [],
+  "lib/utils/error-handler.ts": [
+    "react-native"
+  ],
+  "lib/utils/form-field-builder.ts": [
+    "@/hooks/use-entity-options"
+  ],
+  "lib/utils/logger.ts": []
+}

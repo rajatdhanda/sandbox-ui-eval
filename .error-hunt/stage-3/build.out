@@ -1,0 +1,23 @@
+
+> bolt-expo-starter@1.0.0 build
+> next build
+
+   ▲ Next.js 15.3.5
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 0ms
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/(tabs)/teacher-home.tsx:12:9
+Type error: Type '[string, Dispatch<SetStateAction<string>>]' must have a '[Symbol.iterator]()' method that returns an iterator.
+
+[0m [90m 10 |[39m   [36mconst[39m { user[33m,[39m loading } [33m=[39m useAuth()[33m;[39m[0m
+[0m [90m 11 |[39m   [36mconst[39m router [33m=[39m useRouter()[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 12 |[39m   [36mconst[39m [email[33m,[39m setEmail] [33m=[39m useState([32m'admin2@example.com'[39m)[33m;[39m[0m
+[0m [90m    |[39m         [31m[1m^[22m[39m[0m
+[0m [90m 13 |[39m   [36mconst[39m [password[33m,[39m setPassword] [33m=[39m useState([32m''[39m)[33m;[39m[0m
+[0m [90m 14 |[39m   [36mconst[39m [isSigningIn[33m,[39m setIsSigningIn] [33m=[39m useState([36mfalse[39m)[33m;[39m[0m
+[0m [90m 15 |[39m   [0m
+Next.js build worker exited with code: 1 and signal: null

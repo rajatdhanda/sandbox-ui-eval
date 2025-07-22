@@ -1,0 +1,193 @@
+[
+  {
+    "table": "announcements",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 3
+    }
+  },
+  {
+    "table": "attendance",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  },
+  {
+    "table": "attendancerecords"
+  },
+  {
+    "table": "children",
+    "create": {
+      "ok": false,
+      "error": "null value in column \"date_of_birth\" of relation \"children\" violates not-null constraint"
+    },
+    "read": {
+      "ok": true,
+      "count": 11
+    }
+  },
+  {
+    "table": "classassignments"
+  },
+  {
+    "table": "classes",
+    "create": {
+      "ok": false,
+      "error": "null value in column \"age_group\" of relation \"classes\" violates not-null constraint"
+    },
+    "read": {
+      "ok": true,
+      "count": 23
+    }
+  },
+  {
+    "table": "configfields"
+  },
+  {
+    "table": "curriculum",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 3
+    }
+  },
+  {
+    "table": "curriculumassignments"
+  },
+  {
+    "table": "curriculumexecutions"
+  },
+  {
+    "table": "curriculumimports"
+  },
+  {
+    "table": "curriculumitems"
+  },
+  {
+    "table": "curriculumtemplates"
+  },
+  {
+    "table": "dailylogs"
+  },
+  {
+    "table": "events",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 4
+    }
+  },
+  {
+    "table": "messagethreads"
+  },
+  {
+    "table": "messages",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  },
+  {
+    "table": "milestones",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  },
+  {
+    "table": "notifications",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 9
+    }
+  },
+  {
+    "table": "parentchildrelationships"
+  },
+  {
+    "table": "photoalbums"
+  },
+  {
+    "table": "phototags"
+  },
+  {
+    "table": "photos",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  },
+  {
+    "table": "reports",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  },
+  {
+    "table": "studentprogress"
+  },
+  {
+    "table": "systemlogs"
+  },
+  {
+    "table": "timeslots"
+  },
+  {
+    "table": "users",
+    "create": {
+      "ok": false,
+      "error": "null value in column \"role\" of relation \"users\" violates not-null constraint"
+    },
+    "read": {
+      "ok": true,
+      "count": 11
+    }
+  },
+  {
+    "table": "worksheets",
+    "create": {
+      "ok": false,
+      "error": "Cannot convert undefined or null to object"
+    },
+    "read": {
+      "ok": true,
+      "count": 0
+    }
+  }
+]

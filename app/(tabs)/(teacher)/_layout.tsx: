@@ -1,0 +1,45 @@
+// app/(tabs)/(teacher)/_layout.tsx
+import { Tabs } from 'expo-router';
+import { Calendar, Users, TrendingUp, Camera } from 'lucide-react-native';
+import { colors } from '@/lib/styles';
+
+export default function TeacherLayout() {
+  return (
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors.textSecondary,
+        headerShown: false,
+      }}
+    >
+      <Tabs.Screen
+        name="activities"
+        options={{
+          title: 'Activities',
+          tabBarIcon: ({ color }) => <Calendar size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="students"
+        options={{
+          title: 'Students',
+          tabBarIcon: ({ color }) => <Users size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="progress"
+        options={{
+          title: 'Progress',
+          tabBarIcon: ({ color }) => <TrendingUp size={24} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="quick-capture"
+        options={{
+          title: 'Capture',
+          tabBarIcon: ({ color }) => <Camera size={24} color={color} />,
+        }}
+      />
+    </Tabs>
+  );
+}

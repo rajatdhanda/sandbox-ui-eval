@@ -1,0 +1,8 @@
+// app/(tabs)/classes.tsx
+import React from 'react';
+// Update the import path to match the actual file name and extension
+import { ClassManagement } from '../components/admin-old/class-management';
+
+export default function ClassesScreen() {
+  return <ClassManagement />;
+}

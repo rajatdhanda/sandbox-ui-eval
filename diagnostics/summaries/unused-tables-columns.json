@@ -1,0 +1,60 @@
+{
+  "announcements": [
+    "id",
+    "author_id",
+    "title",
+    "content",
+    "type",
+    "target_audience",
+    "is_published",
+    "publish_date",
+    "expires_at",
+    "attachments",
+    "created_at",
+    "updated_at"
+  ],
+  "class_assignments": [
+    "is_active",
+    "updated_at",
+    "role",
+    "start_date",
+    "end_date",
+    "notes"
+  ],
+  "classes": [
+    "schedule_type",
+    "attachments",
+    "featured_image",
+    "documents",
+    "videos",
+    "photos"
+  ],
+  "curriculum_assignments": [
+    "updated_at",
+    "metadata",
+    "file_attachments"
+  ],
+  "curriculum_items": [
+    "metadata",
+    "tags",
+    "file_attachments"
+  ],
+  "curriculum_options": [
+    "id",
+    "category",
+    "value",
+    "label",
+    "sort_order",
+    "is_active",
+    "created_at"
+  ],
+  "curriculum_templates": [
+    "metadata",
+    "tags",
+    "file_attachments"
+  ],
+  "parent_child_relationships": [
+    "is_active",
+    "updated_at"
+  ]
+}

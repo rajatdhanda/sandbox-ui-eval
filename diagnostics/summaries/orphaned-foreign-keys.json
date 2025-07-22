@@ -1,0 +1,5 @@
+{
+  "orders.user_id->users.id": {
+    "error": "relation \"orders\" does not exist"
+  }
+}

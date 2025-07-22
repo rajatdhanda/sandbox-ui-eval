@@ -1,0 +1,184 @@
+// app/(tabs)/curriculum.tsx
+import React, { useState, useEffect } from 'react';
+import { View, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { db } from '@/lib/supabase/services/database.service';
+import { colors } from '@/lib/styles';
+import { ClassSelector } from '../components/shared/class-selector';
+import { ConfirmButton } from '../components/shared/confirm-button';
+import { TimeSchedule } from '../components/shared/time-schedule';
+import { CurriculumPicker } from '../components/shared/curriculum-picker';
+import { DateWeekSelector } from '../components/shared/date-week-selector';
+
+export default function CurriculumPage() {
+  const [items, setItems] = useState<any[]>([]);
+  const [classes, setClasses] = useState<any[]>([]);
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [pendingChanges, setPendingChanges] = useState<Set<string>>(new Set());
+  const [saving, setSaving] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [selectedTime, setSelectedTime] = useState('');
+  const [availableCurriculum, setAvailableCurriculum] = useState<any[]>([]);
+
+  useEffect(() => { fetchData(); }, [selectedDate, selectedClass]);
+
+  const fetchData = async () => {
+    const [classesRes, itemsRes] = await Promise.all([
+      db.read('classes', { filters: { is_active: true } }),
+      db.read('curriculum_items', {
+        select: `*, time_slot:time_slots(*)`,
+        filters: { is_active: true },
+        orderBy: [{ column: 'week_number' }, { column: 'day_number' }]
+      })
+    ]);
+
+    setClasses(classesRes.data || []);
+    if (classesRes.data?.[0] && !selectedClass) setSelectedClass(classesRes.data[0].id);
+    
+    const { data: executions } = await db.read('curriculum_executions', {
+      filters: { execution_date: selectedDate, class_id: selectedClass }
+    });
+    
+    const enrichedItems = (itemsRes.data || []).map((item: any) => ({
+      ...item,
+      is_completed: executions?.some((exec: any) => 
+        exec.curriculum_item_id === item.id && exec.completion_status === 'completed'
+      ) || false
+    }));
+    
+    setItems(enrichedItems);
+    setPendingChanges(new Set());
+  };
+
+  const toggleComplete = (itemId: string, isCompleted: boolean) => {
+    setItems(prev => prev.map(item => 
+      item.id === itemId ? { ...item, is_completed: !isCompleted } : item
+    ));
+    setPendingChanges(prev => new Set(prev).add(itemId));
+  };
+
+  const handleAddActivity = async (time: string) => {
+    setSelectedTime(time);
+    const { data } = await db.read('curriculum_items', {
+      filters: { is_active: true },
+      orderBy: [{ column: 'title' }]
+    });
+    setAvailableCurriculum(data || []);
+    setShowPicker(true);
+  };
+
+  const handleSelectCurriculum = async (item: any) => {
+  try {
+    console.log('📌 [CURRICULUM] Adding activity:', item);
+    
+    // Prepare the execution data - DO NOT include is_active
+    const executionData = {
+      curriculum_item_id: item.id,
+      class_id: selectedClass,
+      execution_date: selectedDate,
+      completion_status: 'scheduled',
+      created_at: new Date().toISOString(),
+      // Only add time fields if we have valid time data
+      ...(selectedTime && {
+        scheduled_time: `${selectedDate}T${selectedTime}:00.000Z`
+      })
+    };
+    
+    console.log('📊 [CURRICULUM] Execution data:', executionData);
+    
+    const result = await db.create('curriculum_executions', executionData);
+    
+    if (result.error) {
+      console.error('❌ [CURRICULUM] Error creating execution:', result.error);
+      Alert.alert('Error', `Failed to add activity: ${result.error.message || 'Unknown error'}`);
+      return;
+    }
+    
+    console.log('✅ [CURRICULUM] Activity added successfully');
+    Alert.alert('Success', 'Activity added to schedule');
+    
+    setShowPicker(false);
+    setSelectedTime('');
+    fetchData(); // Refresh the schedule
+    
+  } catch (error) {
+    console.error('💥 [CURRICULUM] Unexpected error adding activity:', error);
+    Alert.alert('Error', 'Failed to add activity. Please try again.');
+  }
+};
+
+  const handleDeleteActivity = async (executionId: string) => {
+    await db.delete('curriculum_executions', { id: executionId }, { hard: true });
+    fetchData();
+  };
+
+ const confirmChanges = async () => {
+  setSaving(true);
+  try {
+    const updates = items.filter(item => pendingChanges.has(item.id));
+    
+    await Promise.all(updates.map(async item => {
+      await db.delete('curriculum_executions', { 
+        curriculum_item_id: item.id, 
+        execution_date: selectedDate, 
+        class_id: selectedClass 
+      }, { hard: true });
+      
+      if (item.is_completed) {
+        await db.create('curriculum_executions', {
+          curriculum_item_id: item.id, 
+          class_id: selectedClass, 
+          execution_date: selectedDate,
+          actual_start_time: item.time_slot?.start_time ? `${selectedDate}T${item.time_slot.start_time}:00.000Z` : null,
+          completion_status: 'completed',
+        });
+      }
+    }));
+    
+    setPendingChanges(new Set());
+    Alert.alert('Success', 'Curriculum updated!');
+  } catch (error) {
+    Alert.alert('Error', 'Failed to save changes');
+  }
+  setSaving(false);
+};
+
+  // Filter for today's activities
+  const today = new Date(selectedDate);
+  const dayOfWeek = today.getDay();
+  const adjustedDay = dayOfWeek === 0 ? 7 : dayOfWeek;
+  
+  const todaysItems = items.filter(item => item.day_number === adjustedDay);
+  
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.gray50 }}>
+      <DateWeekSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
+      <ClassSelector classes={classes} selectedClass={selectedClass} onClassChange={setSelectedClass} />
+
+      <TimeSchedule 
+        timeSlots={todaysItems.map(item => ({
+          id: item.id,
+          time: item.time_slot?.start_time || '09:00',
+          title: item.title,
+          description: item.description,
+          isCompleted: item.is_completed,
+          onToggle: () => toggleComplete(item.id, item.is_completed),
+          onDelete: () => handleDeleteActivity(item.id)
+        }))}
+        onAddActivity={handleAddActivity}
+      />
+
+      <CurriculumPicker
+        visible={showPicker}
+        onClose={() => setShowPicker(false)}
+        items={availableCurriculum}
+        onSelect={handleSelectCurriculum}
+      />
+      
+      {pendingChanges.size > 0 && (
+        <ConfirmButton onConfirm={confirmChanges} loading={saving} title={`Save ${pendingChanges.size} Updates`} />
+      )}
+    </SafeAreaView>
+  );
+}

@@ -1,0 +1,5 @@
+// app/(tabs)/children.tsx  
+import { ChildrenManagement } from '../components/admin-old/children-management';
+export default function ChildrenScreen() {
+  return <ChildrenManagement />;
+}

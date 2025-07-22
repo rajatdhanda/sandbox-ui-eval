@@ -1,0 +1,5 @@
+// app/(tabs)/users.tsx
+import { UserManagement } from '../components/admin-old/user-management';
+export default function UsersScreen() {
+  return <UserManagement />;
+}

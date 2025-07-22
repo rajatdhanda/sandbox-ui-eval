@@ -1,0 +1,108 @@
+{
+  "announcements": [
+    "created_at",
+    "updated_at"
+  ],
+  "attendance": [
+    "created_at",
+    "updated_at"
+  ],
+  "attendance_records": [
+    "created_at",
+    "updated_at"
+  ],
+  "children": [
+    "created_at",
+    "updated_at"
+  ],
+  "class_assignments": [
+    "created_at",
+    "updated_at"
+  ],
+  "classes": [
+    "created_at",
+    "updated_at"
+  ],
+  "config_fields": [
+    "created_at",
+    "updated_at"
+  ],
+  "curriculum": [
+    "created_at",
+    "updated_at"
+  ],
+  "curriculum_assignments": [
+    "created_at",
+    "updated_at"
+  ],
+  "curriculum_executions": [
+    "created_at",
+    "updated_at"
+  ],
+  "curriculum_imports": [
+    "created_at"
+  ],
+  "curriculum_items": [
+    "created_at",
+    "updated_at"
+  ],
+  "curriculum_options": [
+    "created_at"
+  ],
+  "curriculum_templates": [
+    "created_at",
+    "updated_at"
+  ],
+  "daily_logs": [
+    "created_at",
+    "updated_at"
+  ],
+  "events": [
+    "created_at",
+    "updated_at"
+  ],
+  "message_threads": [
+    "created_at"
+  ],
+  "messages": [
+    "created_at",
+    "updated_at"
+  ],
+  "milestones": [
+    "created_at",
+    "updated_at"
+  ],
+  "parent_child_relationships": [
+    "created_at",
+    "updated_at"
+  ],
+  "photo_albums": [
+    "created_at",
+    "updated_at"
+  ],
+  "photo_tags": [
+    "created_at"
+  ],
+  "photos": [
+    "created_at",
+    "updated_at"
+  ],
+  "reports": [
+    "created_at"
+  ],
+  "student_progress": [
+    "created_at",
+    "updated_at"
+  ],
+  "time_slots": [
+    "created_at"
+  ],
+  "users": [
+    "created_at",
+    "updated_at"
+  ],
+  "worksheets": [
+    "created_at",
+    "updated_at"
+  ]
+}

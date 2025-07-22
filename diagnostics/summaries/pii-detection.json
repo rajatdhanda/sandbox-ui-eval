@@ -1,0 +1,45 @@
+{
+  "children": [
+    "first_name",
+    "last_name",
+    "emergency_phone"
+  ],
+  "classes": [
+    "name"
+  ],
+  "curriculum": [
+    "name"
+  ],
+  "curriculum_imports": [
+    "source_name"
+  ],
+  "curriculum_templates": [
+    "name"
+  ],
+  "photo_albums": [
+    "name"
+  ],
+  "photo_tags": [
+    "tag_name"
+  ],
+  "photos": [
+    "album_name"
+  ],
+  "student_progress": [
+    "skill_name"
+  ],
+  "system_logs": [
+    "table_name",
+    "ip_address"
+  ],
+  "time_slots": [
+    "name"
+  ],
+  "users": [
+    "email",
+    "full_name",
+    "phone",
+    "address",
+    "emergency_phone"
+  ]
+}

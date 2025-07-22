@@ -1,0 +1,230 @@
+// app/(tabs)/curriculum-admin.tsx
+import React, { useState, useEffect } from 'react';
+import { View, Text, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { BookOpen, Calendar, Users, Target } from 'lucide-react-native';
+import { commonStyles, colors } from '@/lib/styles';
+import { db } from '@/lib/supabase/services/database.service';
+import { CrudHeader, CrudStats, CrudList, CrudCard } from '../components/shared/crud-components';
+import { TabNavigation } from '../components/shared/tab-navigation';
+import { CurriculumForm } from '../components/shared/curriculum-form';
+import { ScrollableContainer } from '../components/shared/scrollable-container';
+
+export default function CurriculumAdminPage() {
+  const [activeView, setActiveView] = useState<'templates' | 'items' | 'assignments'>('templates');
+  const [items, setItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [stats, setStats] = useState({ templates: 0, items: 0, assignments: 0 });
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showForm, setShowForm] = useState(false);
+  const [editingItem, setEditingItem] = useState<any>(null);
+
+  useEffect(() => { fetchData(); }, [activeView]);
+
+  const fetchData = async () => {
+  setLoading(true);
+  try {
+    const tableName = getTableName();
+    const selectQuery = activeView === 'assignments' ? 
+      '*, curriculum_templates(name), classes(name)' : '*';
+      
+    const { data, error } = await db.read(tableName, {
+      select: selectQuery,
+      filters: { is_active: true },
+      orderBy: [{ column: 'created_at', ascending: false }]
+    });
+
+    if (error) {
+      console.error(`Error fetching ${activeView}:`, error);
+      setItems([]);
+    } else {
+      setItems(data || []);
+    }
+    await fetchStats();
+  } catch (error) {
+    console.error('Exception:', error);
+    setItems([]);
+  }
+  setLoading(false);
+};
+
+  const fetchStats = async () => {
+    try {
+      const [templatesRes, itemsRes, assignmentsRes] = await Promise.all([
+        db.count('curriculum_templates', { is_active: true }),
+        db.count('curriculum_items', { is_active: true }),
+        db.count('curriculum_assignments', { is_active: true })
+      ]);
+
+      setStats({
+        templates: templatesRes.count || 0,
+        items: itemsRes.count || 0,
+        assignments: assignmentsRes.count || 0
+      });
+    } catch (error) {
+      console.error('[CURRICULUM] Error fetching stats:', error);
+    }
+  };
+
+  const getTableName = () => {
+    switch (activeView) {
+      case 'templates': return 'curriculum_templates';
+      case 'items': return 'curriculum_items';
+      case 'assignments': return 'curriculum_assignments';
+      default: return 'curriculum_templates';
+    }
+  };
+
+  const handleAdd = () => {
+    setEditingItem(null);
+    setShowForm(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setEditingItem(item);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (item: any) => {
+  Alert.alert('Delete Item', 'Are you sure?', [
+    { text: 'Cancel', style: 'cancel' },
+    { 
+      text: 'Delete', 
+      style: 'destructive',
+      onPress: async () => {
+        setActionLoading(`delete-${item.id}`);
+        try {
+          const tableName = getTableName();
+          const result = await db.update(tableName, { is_active: false }, { id: item.id });
+          if (result?.success) {
+            await fetchData(); // Refresh the list
+          } else {
+            Alert.alert('Error', 'Failed to delete item');
+          }
+        } catch (error) {
+          console.error('Delete error:', error);
+          Alert.alert('Error', 'Failed to delete item');
+        }
+        setActionLoading(null);
+      }
+    }
+  ]);
+};
+
+  const renderItem = (item: any) => {
+    let title = '', subtitle = '';
+    
+    switch (activeView) {
+      case 'templates':
+        title = item.name || 'Untitled Template';
+        subtitle = `${item.age_group || 'All ages'} • ${item.subject_area || 'General'}`;
+        break;
+      case 'items':
+        title = item.title || 'Untitled Activity';
+        subtitle = item.description || item.activity_type || 'Activity';
+        break;
+      case 'assignments':
+        // Show meaningful assignment info
+        const templateName = item.curriculum_templates?.name || 'Unknown Template';
+        const className = item.classes?.name || 'Unknown Class';
+        title = `${templateName} → ${className}`;
+        subtitle = `Started: ${new Date(item.start_date).toLocaleDateString()} • ${item.notes || 'No notes'}`;
+        break;
+    }
+
+    return (
+      <CrudCard
+        key={item.id}
+        item={item}
+        title={title}
+        subtitle={subtitle}
+        onEdit={() => handleEdit(item)}
+        onDelete={() => handleDelete(item)}
+        actionLoading={actionLoading}
+      >
+        {activeView === 'items' && (
+          <Text style={styles.metadata}>
+            Week {item.week_number || 1}, Day {item.day_number || 1} • {item.estimated_duration || 30}min
+          </Text>
+        )}
+      </CrudCard>
+    );
+  };
+
+  const statsData = [
+    { icon: <BookOpen size={24} color={colors.primary} />, value: stats.templates, label: 'Templates' },
+    { icon: <Calendar size={24} color={colors.info} />, value: stats.items, label: 'Activities' },
+    { icon: <Users size={24} color={colors.success} />, value: stats.assignments, label: 'Assignments' },
+    { icon: <Target size={24} color={colors.warning} />, value: 0, label: 'Completed' }
+  ];
+
+  const tabs = [
+    { key: 'templates', label: 'Templates', count: stats.templates },
+    { key: 'items', label: 'Activities', count: stats.items },
+    { key: 'assignments', label: 'Assignments', count: stats.assignments }
+  ];
+
+  return (
+  <ScrollableContainer
+    headerComponent={(isCompact) => (
+      <CrudHeader
+        title="Curriculum Management"
+        subtitle={isCompact ? '' : "Manage templates, activities and assignments"}
+        onAdd={handleAdd}
+        onShowLogs={() => console.log('Show logs')}
+        addButtonText={`Add ${activeView.slice(0, -1)}`}
+        compact={isCompact}
+      />
+    )}
+    headerHeight={100}
+    minHeaderHeight={60}
+  >
+      
+      <View style={{ backgroundColor: colors.background || '#FFFFFF' }}>
+      <CrudStats stats={statsData} />
+      
+      <TabNavigation 
+        activeTab={activeView}
+        onTabChange={(tab) => setActiveView(tab as any)}
+        tabs={tabs}
+      />
+
+      <CrudList
+        loading={loading}
+        items={items.filter(item => 
+          searchTerm === '' || 
+          (item.name || item.title || '').toLowerCase().includes(searchTerm.toLowerCase())
+        )}
+        renderItem={renderItem}
+        emptyIcon={<BookOpen size={48} color={colors.gray300} />}
+        emptyTitle={`No ${activeView} found`}
+        emptySubtitle="Try adjusting your search or add a new item"
+      />
+
+      <CurriculumForm
+        type={activeView === 'templates' ? 'template' : activeView === 'items' ? 'item' : 'assignment'}
+        item={editingItem}
+        visible={showForm}
+        onClose={() => {
+          setShowForm(false);
+          setEditingItem(null);
+        }}
+        onSave={() => {
+          fetchData();
+          setShowForm(false);
+          setEditingItem(null);
+        }}
+      /> 
+    </View>
+    </ScrollableContainer>
+  );
+}
+
+const styles = {
+  metadata: {
+    fontSize: 12,
+    color: colors.gray500,
+    marginTop: 4
+  }
+};

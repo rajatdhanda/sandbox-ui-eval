@@ -1,0 +1,635 @@
+// lib/styles/index.ts
+// Path: lib/styles/index.ts
+
+import { StyleSheet } from 'react-native';
+import { brand } from '@/lib/config/brand-config';
+
+
+// Color palette - Updated with brand colors
+export const colors = {
+  // Primary colors - Using brand colors
+  primary: brand.colors.primary, // #F5A623 - Warm yellow/gold
+  primaryLight: brand.colors.primaryLight,
+  primaryDark: brand.colors.primaryDark,
+
+  // Secondary colors
+  secondary: brand.colors.secondary, // #8B4513 - Earth brown
+  secondaryLight: brand.colors.secondaryLight,
+  secondaryDark: brand.colors.secondaryDark,
+
+  // Accent colors for modules
+  accent: brand.colors.accent,
+  
+
+  // Neutral colors
+  white: '#FFFFFF',
+  black: '#000000',
+  gray50: '#F9FAFB',
+  gray100: '#F3F4F6',
+  gray200: '#E5E7EB',
+  gray300: '#D1D5DB',
+  gray400: '#9CA3AF',
+  gray500: '#6B7280',
+  gray600: '#4B5563',
+  gray700: '#374151',
+  gray800: '#1F2937',
+  gray900: '#111827',
+
+  // Status colors
+  success: brand.colors.success,
+  warning: brand.colors.warning,
+  error: brand.colors.error,
+  info: brand.colors.info,
+
+  // Background colors
+  background: brand.colors.background,
+  surface: brand.colors.surface,
+  surfaceSecondary: '#F3F4F6',
+
+  // Text colors
+  textPrimary: brand.colors.textPrimary,
+  textSecondary: brand.colors.textSecondary,
+  textMuted: brand.colors.textTertiary,
+};
+
+// Typography
+export const typography = {
+  // Font sizes
+  xs: 12,
+  sm: 14,
+  base: 16,
+  lg: 18,
+  xl: 20,
+  '2xl': 24,
+  '3xl': 30,
+  '4xl': 36,
+
+  // Font weights
+  light: '300' as const,
+  normal: '400' as const,
+  medium: '500' as const,
+  semibold: '600' as const,
+  bold: '700' as const,
+  extrabold: '800' as const,
+
+  // Line heights
+  tight: 1.2,
+  normal: 1.5,
+  relaxed: 1.6,
+};
+
+// Spacing
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 20,
+  '2xl': 24,
+  '3xl': 32,
+  '4xl': 40,
+  '5xl': 48,
+  '6xl': 64,
+};
+
+// Border radius
+export const borderRadius = {
+  none: 0,
+  sm: 4,
+  md: 6,
+  lg: 8,
+  xl: 12,
+  '2xl': 16,
+  '3xl': 24,
+  full: 9999,
+};
+
+// Shadows
+export const shadows = {
+  sm: {
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  md: {
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  lg: {
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+};
+
+// Common component styles
+export const commonStyles = StyleSheet.create({
+  // Containers
+  container: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  
+  safeContainer: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+
+  contentContainer: {
+    flex: 1,
+    padding: spacing.xl,
+  },
+
+  scrollContainer: {
+    flex: 1,
+    paddingHorizontal: spacing.xl,
+  },
+
+  // Headers
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.xl,
+    backgroundColor: colors.surface,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray200,
+  },
+
+  headerTitle: {
+    fontSize: typography['2xl'],
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+  },
+
+  headerSubtitle: {
+    fontSize: typography.sm,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+
+  // Cards
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: borderRadius.xl,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
+    ...shadows.md,
+  },
+
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: spacing.md,
+  },
+
+  cardTitle: {
+    fontSize: typography.lg,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+  },
+
+  cardSubtitle: {
+    fontSize: typography.sm,
+    color: colors.textSecondary,
+    marginTop: 2,
+  },
+
+  // Buttons
+  buttonPrimary: {
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  buttonSecondary: {
+    backgroundColor: colors.gray100,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  buttonDanger: {
+    backgroundColor: colors.error,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  buttonText: {
+    color: colors.white,
+    fontSize: typography.base,
+    fontWeight: typography.semibold,
+  },
+
+  buttonTextSecondary: {
+    color: colors.textPrimary,
+    fontSize: typography.base,
+    fontWeight: typography.semibold,
+  },
+
+  // Form elements
+  formGroup: {
+    marginBottom: spacing.xl,
+  },
+
+  formLabel: {
+    fontSize: typography.base,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+    marginBottom: spacing.sm,
+  },
+
+  formInput: {
+    borderWidth: 1,
+    borderColor: colors.gray300,
+    borderRadius: borderRadius.lg,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.md,
+    fontSize: typography.base,
+    color: colors.textPrimary,
+    backgroundColor: colors.surface,
+  },
+
+  formInputError: {
+    borderColor: colors.error,
+  },
+
+  formTextArea: {
+    height: 80,
+    textAlignVertical: 'top',
+  },
+
+  errorText: {
+    fontSize: typography.sm,
+    color: colors.error,
+    marginTop: spacing.xs,
+  },
+
+  // Stats and metrics
+  statsContainer: {
+    flexDirection: 'row',
+    padding: spacing.xl,
+    gap: spacing.md,
+  },
+
+  statCard: {
+    flex: 1,
+    backgroundColor: colors.surface,
+    padding: spacing.lg,
+    borderRadius: borderRadius.xl,
+    alignItems: 'center',
+    ...shadows.md,
+  },
+
+  statNumber: {
+    fontSize: typography.xl,
+    fontWeight: typography.bold,
+    color: colors.textPrimary,
+    marginTop: spacing.sm,
+  },
+
+  statLabel: {
+    fontSize: typography.xs,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+    textAlign: 'center',
+  },
+
+  // Loading states
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: spacing['6xl'],
+  },
+
+  loadingText: {
+    marginTop: spacing.md,
+    fontSize: typography.base,
+    color: colors.textSecondary,
+  },
+
+  // Empty states
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: spacing['6xl'],
+  },
+
+  emptyTitle: {
+    fontSize: typography.lg,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+    marginTop: spacing.lg,
+  },
+
+  emptySubtitle: {
+    fontSize: typography.sm,
+    color: colors.textSecondary,
+    textAlign: 'center',
+    marginTop: spacing.sm,
+    lineHeight: typography.relaxed * typography.sm,
+  },
+
+  // Modal styles
+  modalContainer: {
+    flex: 1,
+    backgroundColor: colors.surface,
+  },
+
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: spacing.xl,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray200,
+  },
+
+  modalTitle: {
+    fontSize: typography.xl,
+    fontWeight: typography.semibold,
+    color: colors.textPrimary,
+  },
+
+  modalContent: {
+    flex: 1,
+    padding: spacing.xl,
+  },
+
+  modalFooter: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    padding: spacing.xl,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray200,
+  },
+
+  // Status badges
+  statusBadge: {
+    paddingHorizontal: spacing.sm,
+    paddingVertical: spacing.xs,
+    borderRadius: borderRadius.xl,
+  },
+
+  statusBadgeActive: {
+    backgroundColor: colors.success,
+  },
+
+  statusBadgeInactive: {
+    backgroundColor: colors.error,
+  },
+
+  statusText: {
+    fontSize: typography.xs,
+    fontWeight: typography.semibold,
+    color: colors.white,
+  },
+
+  // Utility classes
+  row: {
+    flexDirection: 'row',
+  },
+
+  rowBetween: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  rowCenter: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  column: {
+    flexDirection: 'column',
+  },
+
+  flex1: {
+    flex: 1,
+  },
+
+  textCenter: {
+    textAlign: 'center',
+  },
+
+  // Filters and search
+  filtersContainer: {
+    backgroundColor: colors.surface,
+    margin: spacing.xl,
+    marginTop: 0,
+    padding: spacing.lg,
+    borderRadius: borderRadius.xl,
+    ...shadows.md,
+  },
+
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.gray50,
+    borderRadius: borderRadius.lg,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    marginBottom: spacing.md,
+  },
+
+  searchInput: {
+    flex: 1,
+    marginLeft: spacing.sm,
+    fontSize: typography.base,
+    color: colors.textPrimary,
+  },
+
+  filterRow: {
+    flexDirection: 'row',
+    gap: spacing.sm,
+    marginBottom: spacing.md,
+  },
+
+  filterButton: {
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.gray100,
+  },
+
+  filterButtonActive: {
+    backgroundColor: colors.primary,
+  },
+
+  filterButtonText: {
+    fontSize: typography.sm,
+    color: colors.textSecondary,
+    fontWeight: typography.medium,
+  },
+
+  filterButtonTextActive: {
+    color: colors.white,
+  },
+});
+
+// Generic stats builder for CRUD modules
+export const buildModuleStats = (
+  items: any[],
+  config: {
+    activeFilter?: (item: any) => boolean;
+    countField?: string;
+    capacityField?: string;
+    module: string; // 'classes', 'users', 'children', etc.
+  }
+) => {
+  const activeFilter = config.activeFilter || ((item) => item.is_active);
+  const activeCount = items.filter(activeFilter).length;
+  const totalCount = items.length;
+  
+  // Get module colors
+  const moduleColor = getModuleColor(config.module, 'primary');
+  
+  const baseStats = [
+    {
+      icon: moduleColor,
+      value: activeCount,
+      label: `Active ${config.module}`,
+    },
+    {
+      icon: colors.info,
+      value: totalCount,
+      label: `Total ${config.module}`,
+    },
+  ];
+  
+  // Add count-based stats if applicable
+  if (config.countField) {
+    const totalChildCount = items.reduce((sum, item) => sum + (item[config.countField] || 0), 0);
+    baseStats.push({
+      icon: colors.success,
+      value: totalChildCount,
+      label: 'Total Count',
+    });
+  }
+  
+  // Add utilization if both count and capacity exist
+  if (config.countField && config.capacityField) {
+    const totalCapacity = items.reduce((sum, item) => sum + (item[config.capacityField] || 0), 0);
+    const utilization = totalCapacity > 0 
+      ? Math.round((items.reduce((sum, item) => sum + (item[config.countField] || 0), 0) / totalCapacity) * 100) + '%'
+      : '0%';
+    
+    baseStats.push({
+      icon: colors.warning,
+      value: utilization,
+      label: 'Utilization',
+    });
+  }
+  
+  return baseStats;
+};
+
+
+
+
+// Component-specific style generators
+export const createComponentStyles = {
+  // Action buttons with consistent styling
+  actionButton: (size: 'sm' | 'md' | 'lg' = 'md') => ({
+    padding: size === 'sm' ? spacing.xs : size === 'lg' ? spacing.lg : spacing.sm,
+    borderRadius: borderRadius.md,
+    backgroundColor: colors.gray50,
+  }),
+
+  // Utilization badges with dynamic colors
+  utilizationBadge: (percentage: number) => {
+    let color = colors.success;
+    if (percentage >= 90) color = colors.error;
+    else if (percentage >= 75) color = colors.warning;
+
+    return {
+      paddingHorizontal: spacing.sm,
+      paddingVertical: spacing.xs,
+      borderRadius: borderRadius.md,
+      backgroundColor: color + '20',
+    };
+  },
+
+  utilizationText: (percentage: number) => {
+    let color = colors.success;
+    if (percentage >= 90) color = colors.error;
+    else if (percentage >= 75) color = colors.warning;
+
+    return {
+      fontSize: typography.xs,
+      fontWeight: typography.semibold,
+      color: color,
+    };
+  },
+
+  // Color bars for entities
+  colorBar: (color: string) => ({
+    height: 4,
+    backgroundColor: color,
+  }),
+};
+
+// Export default theme object
+export const theme = {
+  colors,
+  typography,
+  spacing,
+  borderRadius,
+  shadows,
+  commonStyles,
+  createComponentStyles,
+};
+
+
+// Module color helpers
+// Module color helpers
+export const getModuleColor = (module: string, type: 'primary' | 'light' | 'border' = 'primary') => {
+  const moduleColors = brand.colors.accent.modules as any;
+  return moduleColors[module]?.[type] || brand.colors.primary;
+};
+
+
+export const mapLegacyColor = (color: string): string => {
+  const colorMap: Record<string, string> = {
+    '#8B5CF6': colors.primary,        // Purple → Earth Brown
+    '#EC4899': colors.secondary,      // Pink → Yellow
+    '#10B981': getModuleColor('attendance', 'primary'), // Green → Sienna
+    '#F59E0B': colors.secondary,      // Amber → Yellow
+    '#3B82F6': getModuleColor('classes', 'primary'),    // Blue → Chocolate
+    '#EF4444': colors.error,          // Red stays red for errors
+  };
+  return colorMap[color] || color;
+};
+
+// Get class color options from brand
+export const classColorOptions = [
+  { value: brand.colors.primary, label: 'Earth Brown' },
+  { value: brand.colors.secondary, label: 'Sunshine Yellow' },
+  { value: brand.colors.accent.modules.classes.primary, label: 'Chocolate' },
+  { value: brand.colors.accent.modules.curriculum.primary, label: 'Peru Brown' },
+  { value: brand.colors.accent.modules.attendance.primary, label: 'Sienna' },
+  { value: brand.colors.accent.modules.photos.primary, label: 'Rosy Brown' }
+];

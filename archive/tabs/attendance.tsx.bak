@@ -1,0 +1,108 @@
+// app/(tabs)/attendance.tsx
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { CheckCircle2, XCircle, Clock } from 'lucide-react-native';
+import { db } from '@/lib/supabase/services/database.service';
+import { colors } from '@/lib/styles';
+import { DateSelector } from '../components/shared/date-selector';
+import { ClassSelector } from '../components/shared/class-selector';
+import { ConfirmButton } from '../components/shared/confirm-button';
+import { StatusButton } from '../components/shared/status-button';
+
+export default function AttendancePage() {
+  const [students, setStudents] = useState<any[]>([]);
+  const [classes, setClasses] = useState<any[]>([]);
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [pendingChanges, setPendingChanges] = useState<Set<string>>(new Set());
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => { fetchData(); }, [selectedDate]);
+
+  const fetchData = async () => {
+    const [classesRes, studentsRes, attendanceRes] = await Promise.all([
+      db.read('classes', { filters: { is_active: true } }),
+      db.read('children', { filters: { is_active: true } }),
+      db.read('attendance_records', { filters: { attendance_date: selectedDate } })
+    ]);
+
+    setClasses((classesRes.data || []) as any[]);
+    const attendanceData = Array.isArray(attendanceRes.data) ? attendanceRes.data : [];
+const studentsWithAttendance = ((studentsRes.data || []) as any[]).map((student: any) => ({
+  ...student,
+  status: attendanceData.find((att: any) => att.child_id === student.id)?.status || null
+}));
+    setStudents(studentsWithAttendance);
+    if (classesRes.data?.[0] && !selectedClass) setSelectedClass(classesRes.data[0].id);
+    setPendingChanges(new Set());
+  };
+
+  const updateAttendance = (studentId: string, status: string) => {
+    setStudents(prev => prev.map(s => s.id === studentId ? { ...s, status } : s));
+    setPendingChanges(prev => new Set(prev).add(studentId));
+  };
+
+ const confirmChanges = async () => {
+  setSaving(true);
+  const updates = students.filter(s => pendingChanges.has(s.id) && s.status).map(s => ({
+    child_id: s.id, 
+    class_id: s.class_id, 
+    attendance_date: selectedDate, 
+    status: s.status,
+    check_in_time: new Date().toISOString(),
+    // Removed checked_in_by to fix the UUID error
+  }));
+  
+  await Promise.all(updates.map(update => 
+    db.upsert('attendance_records', update, ['child_id', 'attendance_date'])
+  ));
+  
+  setPendingChanges(new Set());
+  setSaving(false);
+  Alert.alert('Success', 'Attendance saved!');
+};
+
+  const filteredStudents = students.filter(s => !selectedClass || s.class_id === selectedClass);
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.gray50 }}>
+      <DateSelector selectedDate={selectedDate} onDateChange={setSelectedDate} />
+      <ClassSelector classes={classes} selectedClass={selectedClass} onClassChange={setSelectedClass} />
+      
+      <ScrollView style={{ flex: 1, padding: 20 }}>
+        {filteredStudents.map(student => (
+          <View key={student.id} style={styles.studentCard}>
+            <Text style={styles.studentName}>{student.first_name} {student.last_name}</Text>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <StatusButton 
+                status="present" 
+                isSelected={student.status === 'present'} 
+                onPress={() => updateAttendance(student.id, 'present')} 
+                />
+                <StatusButton 
+                status="late" 
+                isSelected={student.status === 'late'} 
+                onPress={() => updateAttendance(student.id, 'late')} 
+                />
+                <StatusButton 
+                status="absent" 
+                isSelected={student.status === 'absent'} 
+                onPress={() => updateAttendance(student.id, 'absent')} 
+                />
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+      
+      {pendingChanges.size > 0 && (
+        <ConfirmButton onConfirm={confirmChanges} loading={saving} title={`Save ${pendingChanges.size} Changes`} />
+      )}
+    </SafeAreaView>
+  );
+}
+
+const styles = {
+  studentCard: { flexDirection: 'row' as const, justifyContent: 'space-between' as const, alignItems: 'center' as const, backgroundColor: colors.white, padding: 16, borderRadius: 12, marginBottom: 8, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 3, elevation: 2 },
+  studentName: { fontSize: 16, fontWeight: '500' as const, color: colors.gray900, flex: 1 },
+};

@@ -1,0 +1,24 @@
+
+> bolt-expo-starter@1.0.0 build
+> next build
+
+   ▲ Next.js 15.3.5
+   - Environments: .env.local, .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 0ms
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/components/shared/bulk-upload-interface.tsx:617:27
+Type error: Property 'transforms' does not exist on type '{ icon: LucideIcon; title: string; description: string; requiredFields: string[]; optionalFields: string[]; duplicateCheckFields: string[]; validations: { date_of_birth: (value: string) => boolean; parent_email: (value: string) => boolean; parent_phone: (value: string) => boolean; }; transforms: { ...; }; sampleData...'.
+  Property 'transforms' does not exist on type '{ icon: LucideIcon; title: string; description: string; requiredFields: string[]; optionalFields: string[]; duplicateCheckFields: string[]; validations: { status: (value: string) => boolean; quality_score: (value: number) => boolean; engagement_level: (value: string) => boolean; }; }'.
+
+[0m [90m 615 |[39m         targetField[33m,[39m[0m
+[0m [90m 616 |[39m         required[33m:[39m config[33m.[39mrequiredFields[33m.[39mincludes(targetField)[33m,[39m[0m
+[0m[31m[1m>[22m[39m[90m 617 |[39m         transform[33m:[39m config[33m.[39mtransforms[33m?[39m[33m.[39m[targetField][33m,[39m[0m
+[0m [90m     |[39m                           [31m[1m^[22m[39m[0m
+[0m [90m 618 |[39m         validate[33m:[39m config[33m.[39mvalidations[33m?[39m[33m.[39m[targetField][0m
+[0m [90m 619 |[39m       })[33m;[39m[0m
+[0m [90m 620 |[39m     }[0m
+Next.js build worker exited with code: 1 and signal: null

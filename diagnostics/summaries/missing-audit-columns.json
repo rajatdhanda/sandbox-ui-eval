@@ -1,0 +1,26 @@
+{
+  "curriculum_imports": [
+    "updated_at"
+  ],
+  "curriculum_options": [
+    "updated_at"
+  ],
+  "message_threads": [
+    "updated_at"
+  ],
+  "notifications": [
+    "updated_at"
+  ],
+  "photo_tags": [
+    "updated_at"
+  ],
+  "reports": [
+    "updated_at"
+  ],
+  "system_logs": [
+    "updated_at"
+  ],
+  "time_slots": [
+    "updated_at"
+  ]
+}

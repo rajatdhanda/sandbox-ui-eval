@@ -1,0 +1,17 @@
+hooks/test-utilities/hook-error-scanner.ts(158,50): error TS1005: '}' expected.
+lib/styles/themes/activity-theme.ts(162,27): error TS1005: '>' expected.
+lib/styles/themes/activity-theme.ts(162,31): error TS1005: ';' expected.
+lib/styles/themes/activity-theme.ts(162,54): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(162,55): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(164,21): error TS1005: '>' expected.
+lib/styles/themes/activity-theme.ts(164,25): error TS1005: ';' expected.
+lib/styles/themes/activity-theme.ts(164,48): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(164,49): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(166,23): error TS1005: '>' expected.
+lib/styles/themes/activity-theme.ts(166,27): error TS1005: ';' expected.
+lib/styles/themes/activity-theme.ts(166,50): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(166,51): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(168,27): error TS1005: '>' expected.
+lib/styles/themes/activity-theme.ts(168,31): error TS1005: ';' expected.
+lib/styles/themes/activity-theme.ts(168,54): error TS1109: Expression expected.
+lib/styles/themes/activity-theme.ts(168,55): error TS1109: Expression expected.

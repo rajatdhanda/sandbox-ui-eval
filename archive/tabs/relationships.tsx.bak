@@ -1,0 +1,614 @@
+// app/(tabs)/relationships.tsx
+// Path: app/(tabs)/relationships.tsx
+
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Users, Link2, Plus, BookOpen, Baby, Heart, UserPlus, GraduationCap, School, Activity } from 'lucide-react-native';
+import { colors, commonStyles } from '@/lib/styles';
+import { db } from '@/lib/supabase/services/database.service';
+import { useCrud } from '@/hooks/use-crud';
+import { 
+  CrudCard, 
+  CrudHeader, 
+  CrudStats, 
+  CrudFilters, 
+  CrudList, 
+  CrudForm 
+} from '@/app/components/shared/crud-components';
+import { AutoForm } from '@/app/components/shared/auto-form';
+import { ConsoleLogger } from '@/app/components/shared/console-logger';
+import { SmartSelector } from '@/app/components/shared/smart-selector';
+import { ScrollableContainer } from '@/app/components/shared/scrollable-container';
+
+// Default form data for each relationship type
+const parentChildFormData = {
+  parent_id: '',
+  child_id: '',
+  relationship_type: 'parent',
+  is_primary: false,
+  created_at: new Date().toISOString(),
+  is_active: true
+};
+
+const teacherClassFormData = {
+  teacher_id: '',
+  class_id: '',
+  role: 'primary', // primary, assistant, substitute
+  start_date: new Date().toISOString().split('T')[0],
+  end_date: null,
+  notes: '',
+  created_at: new Date().toISOString(),
+  is_active: true
+};
+
+const curriculumFormData = {
+  curriculum_id: '',
+  class_id: '',
+  start_date: new Date().toISOString().split('T')[0],
+  end_date: null,
+  notes: '',
+  created_at: new Date().toISOString(),
+  is_active: true
+};
+
+export default function RelationshipsScreen() {
+  const [activeTab, setActiveTab] = useState<'parent-child' | 'teacher-class' | 'curriculum'>('parent-child');
+  const [showConsole, setShowConsole] = useState(false);
+  const [stats, setStats] = useState({
+    parentChild: 0,
+    teacherClass: 0,
+    curriculum: 0,
+    activeTotal: 0
+  });
+
+  // Initialize state for loading
+  const [optionsLoaded, setOptionsLoaded] = useState(false);
+
+  // Options for dropdowns
+  const [parents, setParents] = useState<any[]>([]);
+  const [children, setChildren] = useState<any[]>([]);
+  const [teachers, setTeachers] = useState<any[]>([]);
+  const [classes, setClasses] = useState<any[]>([]);
+  const [templates, setTemplates] = useState<any[]>([]);
+
+  // Initialize CRUD hooks for each relationship type
+  const parentChildCrud = useCrud({
+    tableName: 'parent_child_relationships',
+    moduleName: 'PARENT_CHILD_RELATIONSHIPS',
+    defaultFormData: parentChildFormData,
+    validate: (data) => {
+      const errors: Record<string, string> = {};
+      if (!data.parent_id) errors.parent_id = 'Parent is required';
+      if (!data.child_id) errors.child_id = 'Child is required';
+      if (!data.relationship_type) errors.relationship_type = 'Relationship type is required';
+      return errors;
+    },
+    selectQuery: `
+      *,
+      parent:users!parent_id(id, full_name, email),
+      child:children!child_id(id, first_name, last_name)
+    `
+  });
+
+  const teacherClassCrud = useCrud({
+    tableName: 'class_assignments',
+    moduleName: 'TEACHER_CLASS_ASSIGNMENTS',
+    defaultFormData: teacherClassFormData,
+    validate: (data) => {
+      const errors: Record<string, string> = {};
+      if (!data.teacher_id) errors.teacher_id = 'Teacher is required';
+      if (!data.class_id) errors.class_id = 'Class is required';
+      if (!data.role) errors.role = 'Role is required';
+      if (!data.start_date) errors.start_date = 'Start date is required';
+      return errors;
+    },
+    selectQuery: `
+      *,
+      teacher:users!teacher_id(id, full_name, email),
+      class:classes!class_id(id, name, age_group)
+    `
+  });
+
+  const curriculumCrud = useCrud({
+    tableName: 'curriculum_assignments',
+    moduleName: 'CURRICULUM_ASSIGNMENTS',
+    defaultFormData: curriculumFormData,
+    validate: (data) => {
+      const errors: Record<string, string> = {};
+      if (!data.curriculum_id) errors.curriculum_id = 'Curriculum template is required';
+      if (!data.class_id) errors.class_id = 'Class is required';
+      if (!data.start_date) errors.start_date = 'Start date is required';
+      return errors;
+    },
+    selectQuery: `
+      *,
+      curriculum_templates!curriculum_id(id, name, subject_area, age_group),
+      classes!class_id(id, name, age_group)
+    `
+  });
+
+  // Get current CRUD based on active tab
+  const currentCrud = activeTab === 'parent-child' ? parentChildCrud : 
+                     activeTab === 'teacher-class' ? teacherClassCrud : 
+                     curriculumCrud;
+
+  // Load options for dropdowns
+  const loadOptions = async () => {
+    try {
+      console.log('🔄 Loading dropdown options...');
+      const [parentsRes, childrenRes, teachersRes, classesRes, templatesRes] = await Promise.all([
+        db.read('users', { filters: { role: 'parent', is_active: true } }),
+        db.read('children', { filters: { is_active: true } }),
+        db.read('users', { filters: { role: 'teacher', is_active: true } }),
+        db.read('classes', { filters: { is_active: true } }),
+        db.read('curriculum_templates', { filters: { is_active: true } })
+      ]);
+
+      console.log('📊 Options loaded:', {
+        parents: parentsRes.data?.length || 0,
+        children: childrenRes.data?.length || 0,
+        teachers: teachersRes.data?.length || 0,
+        classes: classesRes.data?.length || 0,
+        templates: templatesRes.data?.length || 0
+      });
+
+      // Log sample data to check field names
+      if (parentsRes.data?.length > 0) {
+        console.log('👤 Sample parent:', parentsRes.data[0]);
+      }
+      if (childrenRes.data?.length > 0) {
+        console.log('👶 Sample child:', childrenRes.data[0]);
+      }
+      if (teachersRes.data?.length > 0) {
+        console.log('👨‍🏫 Sample teacher:', teachersRes.data[0]);
+      }
+      if (classesRes.data?.length > 0) {
+        console.log('🏫 Sample class:', classesRes.data[0]);
+      }
+
+      setParents(parentsRes.data || []);
+      setChildren(childrenRes.data || []);
+      setTeachers(teachersRes.data || []);
+      setClasses(classesRes.data || []);
+      setTemplates(templatesRes.data || []);
+      setOptionsLoaded(true);
+    } catch (error) {
+      console.error('Error loading options:', error);
+    }
+  };
+
+  useEffect(() => {
+    loadOptions();
+  }, []);
+
+  // Reload options when switching tabs
+  useEffect(() => {
+    if (!optionsLoaded) {
+      loadOptions();
+    }
+  }, [activeTab]);
+
+  // Update stats when items change
+  useEffect(() => {
+    setStats({
+      parentChild: parentChildCrud.items.length,
+      teacherClass: teacherClassCrud.items.length,
+      curriculum: curriculumCrud.items.length,
+      activeTotal: parentChildCrud.items.filter(i => i.is_active).length +
+                   teacherClassCrud.items.filter(i => i.is_active).length +
+                   curriculumCrud.items.filter(i => i.is_active).length
+    });
+  }, [parentChildCrud.items, teacherClassCrud.items, curriculumCrud.items]);
+
+  // Get stats configuration
+  const getStatsConfig = () => [
+    { 
+      icon: <Link2 size={24} color={colors.primary} />, 
+      value: stats.activeTotal, 
+      label: 'Active Links' 
+    },
+    { 
+      icon: <Users size={24} color={colors.success} />, 
+      value: stats.parentChild, 
+      label: 'Parent-Child' 
+    },
+    { 
+      icon: <GraduationCap size={24} color={colors.warning} />, 
+      value: stats.teacherClass, 
+      label: 'Teacher-Class' 
+    },
+    { 
+      icon: <BookOpen size={24} color={colors.info} />, 
+      value: stats.curriculum, 
+      label: 'Curriculum' 
+    }
+  ];
+
+  // Get form fields based on active tab
+  const getFormFields = () => {
+    console.log('📋 Getting form fields for:', activeTab);
+    console.log('📊 Available options:', {
+      parents: parents.length,
+      children: children.length,
+      teachers: teachers.length,
+      classes: classes.length,
+      templates: templates.length
+    });
+    
+    switch (activeTab) {
+      case 'parent-child':
+        return [
+          { 
+            key: 'parent_id', 
+            label: 'Parent', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: parents, 
+            displayField: 'full_name', 
+            placeholder: 'Select parent' 
+          },
+          { 
+            key: 'child_id', 
+            label: 'Child', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: children, 
+            displayField: 'first_name,last_name', 
+            placeholder: 'Select child' 
+          },
+          { 
+            key: 'relationship_type', 
+            label: 'Relationship Type', 
+            type: 'select' as const, 
+            required: true, 
+            options: ['parent', 'guardian', 'emergency'], 
+            placeholder: 'Select type' 
+          },
+          { 
+            key: 'is_primary', 
+            label: 'Primary Contact', 
+            type: 'checkbox' as const 
+          }
+        ];
+      
+      case 'teacher-class':
+        return [
+          { 
+            key: 'teacher_id', 
+            label: 'Teacher', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: teachers, 
+            displayField: 'full_name', 
+            placeholder: 'Select teacher' 
+          },
+          { 
+            key: 'class_id', 
+            label: 'Class', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: classes, 
+            displayField: 'name', 
+            placeholder: 'Select class' 
+          },
+          { 
+            key: 'role', 
+            label: 'Role', 
+            type: 'select' as const, 
+            required: true, 
+            options: ['primary', 'assistant', 'substitute'], 
+            placeholder: 'Select role' 
+          },
+          { 
+            key: 'start_date', 
+            label: 'Start Date', 
+            type: 'date' as const, 
+            required: true 
+          },
+          { 
+            key: 'end_date', 
+            label: 'End Date', 
+            type: 'date' as const 
+          },
+          { 
+            key: 'notes', 
+            label: 'Notes', 
+            type: 'textarea' as const, 
+            placeholder: 'Optional notes' 
+          }
+        ];
+      
+      case 'curriculum':
+        return [
+          { 
+            key: 'curriculum_id', 
+            label: 'Curriculum Template', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: templates, 
+            displayField: 'name', 
+            placeholder: 'Select curriculum' 
+          },
+          { 
+            key: 'class_id', 
+            label: 'Class', 
+            type: 'smart-select' as const, 
+            required: true, 
+            options: classes, 
+            displayField: 'name', 
+            placeholder: 'Select class' 
+          },
+          { 
+            key: 'start_date', 
+            label: 'Start Date', 
+            type: 'date' as const, 
+            required: true 
+          },
+          { 
+            key: 'end_date', 
+            label: 'End Date', 
+            type: 'date' as const 
+          },
+          { 
+            key: 'notes', 
+            label: 'Notes', 
+            type: 'textarea' as const, 
+            placeholder: 'Optional notes' 
+          }
+        ];
+    }
+  };
+
+  // Helper functions for display
+  const getRelationshipColor = (type: string) => {
+    switch (type) {
+      case 'parent': return colors.success;
+      case 'guardian': return colors.warning;
+      case 'emergency': return colors.error;
+      case 'primary': return colors.primary;
+      case 'assistant': return colors.info;
+      case 'substitute': return colors.warning;
+      default: return colors.textSecondary;
+    }
+  };
+
+  const getRelationshipIcon = (type: string) => {
+    switch (type) {
+      case 'parent': return <Users size={16} color={getRelationshipColor(type)} />;
+      case 'guardian': return <UserPlus size={16} color={getRelationshipColor(type)} />;
+      case 'emergency': return <Heart size={16} color={getRelationshipColor(type)} />;
+      case 'primary': return <GraduationCap size={16} color={getRelationshipColor(type)} />;
+      case 'assistant': return <School size={16} color={getRelationshipColor(type)} />;
+      default: return <Link2 size={16} color={getRelationshipColor(type)} />;
+    }
+  };
+
+  const getTabIcon = (tab: string) => {
+    switch (tab) {
+      case 'parent-child': return <Users size={16} />;
+      case 'teacher-class': return <GraduationCap size={16} />;
+      case 'curriculum': return <BookOpen size={16} />;
+    }
+  };
+
+  const getTabLabel = (tab: string) => {
+    switch (tab) {
+      case 'parent-child': return `Parent-Child (${stats.parentChild})`;
+      case 'teacher-class': return `Teacher-Class (${stats.teacherClass})`;
+      case 'curriculum': return `Curriculum (${stats.curriculum})`;
+    }
+  };
+
+  return (
+    <SafeAreaView style={commonStyles.container}>
+      <ScrollableContainer
+        headerComponent={(isCompact) => (
+          <CrudHeader
+            title="Relationship Management"
+            subtitle="Manage all connections and assignments"
+            onAdd={async () => {
+              if (!optionsLoaded) {
+                await loadOptions(); // Ensure options are loaded
+              }
+              currentCrud.setShowForm(true);
+            }}
+            onShowLogs={() => setShowConsole(true)}
+            addButtonText={`Add ${activeTab === 'parent-child' ? 'Relationship' : 'Assignment'}`}
+            compact={isCompact}
+          />
+        )}
+        headerHeight={100}
+        minHeaderHeight={60}
+      >
+        <CrudStats stats={getStatsConfig()} />
+
+        {/* Tab Selector */}
+        <View style={styles.tabContainer}>
+          {(['parent-child', 'teacher-class', 'curriculum'] as const).map((tab) => (
+            <TouchableOpacity
+              key={tab}
+              style={[styles.tab, activeTab === tab && styles.activeTab]}
+              onPress={() => setActiveTab(tab)}
+            >
+              {React.cloneElement(getTabIcon(tab)!, { 
+                color: activeTab === tab ? colors.primary : colors.textSecondary 
+              })}
+              <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
+                {getTabLabel(tab)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Search and Filters */}
+        <CrudFilters
+          searchTerm={currentCrud.searchTerm}
+          onSearchChange={currentCrud.setSearchTerm}
+          onRefresh={() => {
+            currentCrud.fetchItems();
+            loadOptions();
+          }}
+          loading={currentCrud.loading}
+        />
+
+        {/* Content List */}
+        <CrudList
+          loading={currentCrud.loading}
+          items={currentCrud.items}
+          emptyIcon={getTabIcon(activeTab)}
+          emptyTitle={`No ${activeTab} relationships found`}
+          emptySubtitle={`Create ${activeTab} relationships to get started`}
+          renderItem={(item) => {
+            let title = '';
+            let subtitle = '';
+            let relationshipType = '';
+
+            switch (activeTab) {
+              case 'parent-child':
+                title = `${item.parent?.full_name || 'Unknown'} → ${item.child?.first_name || 'Unknown'} ${item.child?.last_name || ''}`;
+                subtitle = item.relationship_type?.toUpperCase() || 'UNKNOWN';
+                relationshipType = item.relationship_type || 'parent';
+                break;
+              case 'teacher-class':
+                title = `${item.teacher?.full_name || 'Unknown'} → ${item.class?.name || 'Unknown'}`;
+                subtitle = `${(item.role || 'unknown').toUpperCase()} • ${item.class?.age_group || ''}`;
+                relationshipType = item.role || 'primary';
+                break;
+              case 'curriculum':
+                title = `${item.curriculum_templates?.name || 'Unknown'} → ${item.classes?.name || 'Unknown'}`;
+                subtitle = `${item.curriculum_templates?.subject_area || 'General'} • ${item.curriculum_templates?.age_group || 'All ages'}`;
+                relationshipType = 'curriculum';
+                break;
+            }
+
+            return (
+              <CrudCard
+                key={item.id}
+                item={item}
+                title={title}
+                subtitle={subtitle}
+                onEdit={() => currentCrud.handleEdit(item)}
+                onDelete={() => currentCrud.handleDelete(item)}
+                actionLoading={currentCrud.actionLoading}
+                colorBar={relationshipType ? getRelationshipColor(relationshipType) : colors.primary}
+              >
+                <View style={{ marginTop: 8 }}>
+                  {activeTab === 'parent-child' && (
+                    <>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        {getRelationshipIcon(item.relationship_type)}
+                        <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+                          {item.is_primary ? 'Primary Guardian' : 'Secondary Guardian'}
+                        </Text>
+                      </View>
+                      <Text style={{ color: colors.textSecondary, fontSize: 12, marginTop: 4 }}>
+                        Parent Email: {item.parent?.email || 'N/A'}
+                      </Text>
+                    </>
+                  )}
+                  
+                  {activeTab === 'teacher-class' && (
+                    <>
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                        {getRelationshipIcon(item.role)}
+                        <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+                          {item.role === 'primary' ? 'Primary Teacher' : item.role === 'assistant' ? 'Assistant Teacher' : 'Substitute'}
+                        </Text>
+                      </View>
+                      <Text style={{ color: colors.textSecondary, fontSize: 12, marginTop: 4 }}>
+                        Start: {new Date(item.start_date).toLocaleDateString()}
+                        {item.end_date && ` • End: ${new Date(item.end_date).toLocaleDateString()}`}
+                      </Text>
+                    </>
+                  )}
+                  
+                  {activeTab === 'curriculum' && (
+                    <>
+                      <Text style={{ color: colors.textSecondary, fontSize: 12 }}>
+                        Start: {new Date(item.start_date).toLocaleDateString()}
+                        {item.end_date && ` • End: ${new Date(item.end_date).toLocaleDateString()}`}
+                      </Text>
+                      <Text style={{ color: colors.textSecondary, fontSize: 12, marginTop: 4 }}>
+                        Status: {item.end_date ? 'Completed' : 'Active'}
+                      </Text>
+                    </>
+                  )}
+                  
+                  <Text style={{ color: colors.textSecondary, fontSize: 11, marginTop: 4 }}>
+                    Created: {new Date(item.created_at).toLocaleDateString()}
+                  </Text>
+                </View>
+              </CrudCard>
+            );
+          }}
+        />
+
+        {/* Form Modal */}
+        <CrudForm
+          visible={currentCrud.showForm}
+          title={currentCrud.editingItem ? 
+            `Edit ${activeTab === 'parent-child' ? 'Relationship' : 'Assignment'}` :
+            `Add ${activeTab === 'parent-child' ? 'Relationship' : 'Assignment'}`
+          }
+          onClose={currentCrud.handleCloseForm}
+          onSubmit={currentCrud.handleSubmit}
+          loading={!!currentCrud.actionLoading}
+        >
+          {optionsLoaded ? (
+            <AutoForm
+              fields={getFormFields()}
+              data={currentCrud.formData}
+              onChange={(key, value) => {
+                currentCrud.setFormData({ ...currentCrud.formData, [key]: value });
+              }}
+              errors={currentCrud.formErrors}
+            />
+          ) : (
+            <View style={{ padding: 20, alignItems: 'center' }}>
+              <Text style={{ color: colors.textSecondary }}>Loading options...</Text>
+            </View>
+          )}
+        </CrudForm>
+      </ScrollableContainer>
+
+      <ConsoleLogger 
+        visible={showConsole} 
+        onClose={() => setShowConsole(false)} 
+      />
+    </SafeAreaView>
+  );
+}
+
+const styles = {
+  tabContainer: {
+    flexDirection: 'row' as const,
+    backgroundColor: colors.cardBackground,
+    borderRadius: 12,
+    padding: 4,
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  tab: {
+    flex: 1,
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    justifyContent: 'center' as const,
+    paddingVertical: 10,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    gap: 4,
+  },
+  activeTab: {
+    backgroundColor: colors.primary + '20',
+  },
+  tabText: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    fontWeight: '500' as const,
+  },
+  activeTabText: {
+    color: colors.primary,
+    fontWeight: '600' as const,
+  },
+};

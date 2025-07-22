@@ -1,0 +1,230 @@
+// components/shared/console-logger.tsx
+import React, { useState, useEffect } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Modal } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { X, Trash2 } from 'lucide-react-native';
+import { commonStyles, colors, spacing, typography } from '@/lib/styles';
+
+interface LogEntry {
+  id: string;
+  timestamp: string;
+  level: string;
+  module: string;
+  action: string;
+  data?: any;
+}
+
+interface ConsoleLoggerProps {
+  visible: boolean;
+  onClose: () => void;
+}
+
+export const ConsoleLogger: React.FC<ConsoleLoggerProps> = ({ visible, onClose }) => {
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+
+  useEffect(() => {
+    if (visible) {
+      // Get logs from global logger if it exists
+      try {
+        const { logger } = require('@/lib/utils/logger');
+        const allLogs = logger.getLogs() || [];
+        setLogs(allLogs.slice(-100)); // Last 100 logs
+      } catch (error) {
+        console.log('Logger not found, using console logs');
+        setLogs([
+          {
+            id: '1',
+            timestamp: new Date().toISOString(),
+            level: 'INFO',
+            module: 'CONSOLE',
+            action: 'Logger not configured - check browser console for logs',
+            data: null
+          }
+        ]);
+      }
+    }
+  }, [visible]);
+
+  const clearLogs = () => {
+    try {
+      const { logger } = require('@/lib/utils/logger');
+      logger.clearLogs();
+      setLogs([]);
+    } catch (error) {
+      console.log('Could not clear logs');
+    }
+  };
+
+  const getLevelColor = (level: string) => {
+    switch (level?.toUpperCase()) {
+      case 'ERROR': return colors.error;
+      case 'WARN': return colors.warning;
+      case 'INFO': return colors.info;
+      case 'DEBUG': return colors.textSecondary;
+      default: return colors.textPrimary;
+    }
+  };
+
+  const getLevelIcon = (level: string) => {
+    switch (level?.toUpperCase()) {
+      case 'ERROR': return '❌';
+      case 'WARN': return '⚠️';
+      case 'INFO': return 'ℹ️';
+      case 'DEBUG': return '🔍';
+      default: return '📝';
+    }
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" presentationStyle="fullScreen">
+      <SafeAreaView style={commonStyles.container as any as any}>
+        <View style={commonStyles.header as any as any}>
+          <View>
+            <Text style={commonStyles.headerTitle as any}>Debug Console</Text>
+            <Text style={commonStyles.headerSubtitle as any}>{logs.length} log entries</Text>
+          </View>
+          <View style={{ flexDirection: 'row', gap: spacing.sm }}>
+            <TouchableOpacity 
+              style={styles.clearButton}
+              onPress={clearLogs}
+            >
+              <Trash2 size={16} color={colors.error} />
+              <Text style={[styles.buttonText, { color: colors.error }]}>Clear</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.closeButton}
+              onPress={onClose}
+            >
+              <X size={20} color={colors.white} />
+              <Text style={styles.buttonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <ScrollView style={styles.logContainer}>
+          {logs.length === 0 ? (
+            <View style={commonStyles.emptyContainer as any}>
+              <Text style={commonStyles.emptyTitle as any}>No logs available</Text>
+              <Text style={commonStyles.emptySubtitle as any}>
+                Perform some actions to see logs here, or check browser console
+              </Text>
+            </View>
+          ) : (
+            logs.map((log, index) => (
+              <View key={`${log.id || index}`} style={styles.logEntry}>
+                <View style={styles.logHeader}>
+                  <Text style={styles.logIcon}>{getLevelIcon(log.level)}</Text>
+                  <Text style={[styles.logLevel, { color: getLevelColor(log.level) }]}>
+                    {log.level?.toUpperCase()}
+                  </Text>
+                  <Text style={styles.logModule}>[{log.module}]</Text>
+                  <Text style={styles.logTime}>
+                    {new Date(log.timestamp).toLocaleTimeString()}
+                  </Text>
+                </View>
+                <Text style={styles.logAction}>{log.action}</Text>
+                {log.data && (
+                  <Text style={styles.logData}>
+                    {typeof log.data === 'string' ? log.data : JSON.stringify(log.data, null, 2)}
+                  </Text>
+                )}
+              </View>
+            ))
+          )}
+        </ScrollView>
+
+        {/* Console logs instructions */}
+        <View style={styles.instructions}>
+          <Text style={styles.instructionTitle}>💡 Browser Console</Text>
+          <Text style={styles.instructionText}>
+            Press F12 → Console tab to see all logs including network requests
+          </Text>
+        </View>
+      </SafeAreaView>
+    </Modal>
+  );
+};
+
+const styles = {
+  clearButton: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    backgroundColor: colors.gray100,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 6,
+    gap: spacing.xs,
+  },
+  closeButton: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    backgroundColor: colors.primary,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: 6,
+    gap: spacing.xs,
+  },
+  buttonText: {
+        fontSize: typography.sm,
+        fontWeight: typography.semibold,
+        color: colors.white,
+      },
+,
+  logContainer: {
+    flex: 1,
+    padding: spacing.md,
+  },
+  logEntry: {
+    backgroundColor: colors.gray50,
+    padding: spacing.md,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.sm,
+  },
+  logHeader: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    marginBottom: spacing.xs,
+    gap: spacing.xs,
+  },
+  logIcon: {
+    fontSize: typography.base,
+  },
+  logLevel: {
+    fontSize: typography.sm,
+    fontWeight: typography.semibold as const,
+  },
+  logModule: {
+    fontSize: typography.sm,
+    color: colors.textSecondary,
+  },
+  logTime: {
+    fontSize: typography.xs,
+    color: colors.textSecondary,
+    marginLeft: 'auto' as const,
+  },
+  logAction: {
+    fontSize: typography.sm,
+    color: colors.textPrimary,
+    marginBottom: spacing.xs,
+  },
+  logData: {
+    fontSize: typography.xs,
+    color: colors.textSecondary,
+    fontFamily: 'monospace',
+  },
+  instructions: {
+    backgroundColor: colors.gray50,
+    padding: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.gray200,
+  },
+  instructionTitle: {
+    fontSize: typography.sm,
+    fontWeight: typography.semibold as const,
+    color: colors.textPrimary,
+    marginBottom: spacing.xs,
+  },
+  instructionText: {
+    fontSize: typography.xs,
+    color: colors.textSecondary,
+  }    };
