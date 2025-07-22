@@ -36,3 +36,10 @@ yarn-error.*
 dist/
 .vercel
 .qa-ultimate/
+
+
+node_modules/
+.next/
+.qa-ultimate/
+schema/
+*.log
